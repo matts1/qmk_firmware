@@ -48,6 +48,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM    200
 #define IGNORE_MOD_TAP_INTERRUPT // this makes it possible to do rolling combos (zx) with keys that convert to other keys on hold (z becomes ctrl when you hold it, and when this option isn't enabled, z rapidly followed by x actually sends Ctrl-x. That's bad.)
 
+#define PERMISSIVE_HOLD
+
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
 #define LOCKING_SUPPORT_ENABLE
 /* Locking resynchronize hack */
@@ -96,7 +98,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * runs seeming to need it. This may change when configuration for
  * this is more directly exposed.
  */
-#define DEBOUNCE    15
+// #define DEBOUNCE    15
+#define DEBOUNCE 5
 
 #define PREVENT_STUCK_MODIFIERS
 
