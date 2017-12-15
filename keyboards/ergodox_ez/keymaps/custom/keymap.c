@@ -18,6 +18,7 @@ enum {
   NAV,
   NUMBERS,
   GAMING,
+  GAMINGDIRS,
   MOUSE,
   MACRO,
 };
@@ -75,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Right hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_AT,         KC_LABK,       KC_MINUS,      KC_RABK,       KC_AMPR,       KC_TRNS,
+    KC_TRNS,       KC_AT,         KC_MINUS,      KC_LABK,       KC_RABK,       KC_AMPR,       KC_TRNS,
                    KC_SLASH,      KC_UNDS,       KC_KP_PLUS,    KC_KP_ASTERISK,KC_0,          KC_TRNS,
     KC_TRNS,       KC_DLR,        KC_EXLM,       KC_PERC,       KC_TILD,       KC_PIPE,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
@@ -115,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [NUMBERS] = KEYMAP(
     // Left hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_EQUAL,      KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_1,          KC_2,          KC_3,          KC_4,          KC_5,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
@@ -127,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Right hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_SLASH,      KC_MINUS,      KC_KP_PLUS,    KC_KP_ASTERISK,KC_TRNS,       KC_TRNS,
                    KC_6,          KC_7,          KC_8,          KC_9,          KC_0,          KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
@@ -155,7 +156,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_6,          KC_7,          KC_8,          KC_9,          KC_0,          KC_EQUAL,
     KC_TRNS,       KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,          KC_TRNS,
                    KC_H,          KC_J,          KC_K,          KC_L,          KC_SCOLON,     KC_ENTER,
-    KC_TRNS,       KC_N,          KC_M,          KC_COMMA,      KC_DOT,        KC_SLASH,      KC_LSHIFT,
+    TG(GAMINGDIRS),KC_N,          KC_M,          KC_COMMA,      KC_DOT,        KC_SLASH,      KC_LSHIFT,
+                                  KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Right Thumb Cluster
+    KC_TRNS,       KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS
+  ),
+
+  [GAMINGDIRS] = KEYMAP(
+    // Left hand
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       TO(BASE),
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Left Thumb Cluster
+                                                                               KC_TRNS,       KC_TRNS,
+                                                                                              KC_TRNS,
+                                                                KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Right hand
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_UP,         KC_TRNS,       KC_TRNS,       KC_TRNS,
+                   KC_TRNS,       KC_LEFT,       KC_DOWN,       KC_RIGHT,      KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -209,6 +236,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       LALT(LSFT(KC_1)),LALT(LSFT(KC_2)),KC_3,          KC_4,          KC_5,          KC_TRNS,
                    KC_F21,        KC_F22,        KC_F23,        KC_F24,        KC_0,          KC_TRNS,
     KC_TRNS,       LALT(LSFT(KC_F16)),KC_F17,        KC_F18,        KC_F19,        KC_F20,        KC_TRNS,
+                                  KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Right Thumb Cluster
+    KC_TRNS,       KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS
+  ),
+*/
+
+/*
+  [EMPTY] = KEYMAP(
+    // Left hand
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Left Thumb Cluster
+                                                                               KC_TRNS,       KC_TRNS,
+                                                                                              KC_TRNS,
+                                                                KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Right hand
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -277,6 +332,9 @@ uint32_t layer_state_set_user(uint32_t state) {
     switch (layer) {
       case GAMING:
         ergodox_right_led_1_on();
+        break;
+      case GAMINGDIRS:
+        ergodox_right_led_2_on();
         break;
       case MOUSE:
         ergodox_right_led_3_on();
