@@ -16,7 +16,7 @@ enum {
   BASE = 0,
   PUNC,
   NAV,
-  FUNCTION,
+  NUMBERS,
   GAMING,
   GAMINGDIRS,
   MOUSE,
@@ -36,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [BASE] = KEYMAP(
     // Left hand
-    KC_UNDS,       KC_1,          KC_2,          KC_3,          KC_4,          KC_5,          KC_F11,
+    KC_TRNS,       KC_F1,         KC_F2,         KC_F3,         KC_F4,         KC_F5,         KC_F11,
     KC_TAB,        KC_QUOTE,      KC_COMMA,      KC_DOT,        KC_P,          KC_Y,          KC_ENTER,
     KC_LSHIFT,     KC_A,          KC_O,          KC_E,          KC_U,          KC_I,
     KC_ESC,        KC_SCOLON,     KC_Q,          KC_J,          KC_K,          KC_X,          TG(GAMING),
@@ -48,17 +48,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                 KC_SPACE,      MO(NAV),       KC_LCTL,
 
     // Right hand
-    KC_F12,        KC_6,          KC_7,          KC_8,          KC_9,          KC_0,          KC_PSCREEN,
+    KC_F12,        KC_F6,         KC_F7,         KC_F8,         KC_F9,         KC_F10,        KC_PSCREEN,
     KC_TRNS,       KC_F,          KC_G,          KC_C,          KC_R,          KC_L,          KC_BSPACE,
                    KC_D,          KC_H,          KC_T,          KC_N,          KC_S,          KC_ENTER,
     KC_TRNS,       KC_B,          KC_M,          KC_W,          KC_V,          KC_Z,          KC_DELETE,
-                                  KC_LGUI,       MO(FUNCTION),  KC_TRNS,       KC_TRNS,       TT(MOUSE),
+                                  KC_LGUI,       MO(NUMBERS),  KC_TRNS,       KC_TRNS,       TT(MOUSE),
 
     // Right Thumb Cluster
     PREV_TRACK,    NEXT_TRACK,
     KC_TRNS,
     // TODO: make lshift into a different layer that shifts everything except a few specific keys (caps -> underscore, comma stays as comma, switching to punc doesn't affect it)
-    KC_TRNS,       MO(FUNCTION),  MO(PUNC)
+    KC_TRNS,       MO(NUMBERS),  MO(PUNC)
   ),
 
   [PUNC] = KEYMAP(
@@ -113,11 +113,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS
   ),
 
-  [FUNCTION] = KEYMAP(
+  [NUMBERS] = KEYMAP(
     // Left hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_F1,         KC_F2,         KC_F3,         KC_F4,         KC_F5,
+    KC_TRNS,       KC_1,          KC_2,          KC_3,          KC_4,          KC_5,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Right hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-                   KC_F6,         KC_F7,         KC_F8,         KC_F9,         KC_F10,        KC_TRNS,
+                   KC_6,          KC_7,          KC_8,          KC_9,          KC_0,          KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
