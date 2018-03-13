@@ -101,9 +101,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Right hand
     KC_F12,        KC_F6,         KC_F7,         KC_F8,         KC_F9,         KC_F10,        KC_GRAVE,
-    KC_TRNS,       KC_HASH,       KC_MINUS,      KC_LABK,       KC_RABK,       KC_AMPR,       KC_TRNS,
+    KC_TRNS,       KC_HASH,       KC_PERC,       KC_LABK,       KC_RABK,       KC_AMPR,       KC_TRNS,
                    KC_SLASH,      KC_UNDS,       KC_PLUS,       KC_ASTERISK,   KC_0,          KC_TRNS,
-    KC_TRNS,       KC_DLR,        KC_EXLM,       KC_PERC,       KC_TILD,       KC_PIPE,       KC_TRNS,
+    KC_TRNS,       KC_DLR,        KC_MINUS,      KC_EXLM,       KC_TILD,       KC_PIPE,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
