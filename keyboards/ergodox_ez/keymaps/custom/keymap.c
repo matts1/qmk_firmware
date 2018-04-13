@@ -9,6 +9,10 @@ enum custom_keycodes {
   EPRM,
   VRSN,
   RGB_SLD,
+  CRITIQUE,
+  GMAIL,
+  GMM,
+  JCG,
 };
 
 enum {
@@ -39,19 +43,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_1,          KC_2,          KC_3,          KC_4,          KC_5,          KC_F11,
     KC_TAB,        KC_QUOTE,      KC_COMMA,      KC_DOT,        KC_P,          KC_Y,          KC_ENTER,
     KC_LSHIFT,     KC_A,          KC_O,          KC_E,          KC_U,          KC_I,
-    KC_ESC,        KC_SCOLON,     KC_Q,          KC_J,          KC_K,          KC_X,          TG(GAMING),
-    MEH_T(KC_NO),  KC_TRNS,       KC_TRNS,       KC_LALT,       KC_LCTL,
+    KC_ESC,        KC_SCOLON,     KC_Q,          KC_J,          KC_K,          KC_X,          KC_BSPACE,
+    MEH_T(KC_NO),  KC_UNDS,       KC_COLN,       KC_EQUAL,      KC_LCTL,
 
     // Left Thumb Cluster
-                                                                               PLAY_PAUSE,    KC_APPLICATION,
-                                                                                              KC_LGUI,
+                                                                               KC_6,          KC_7,
+                                                                                              KC_8,
                                                                 KC_SPACE,      MO(NAV),       KC_LCTL,
 
     // Right hand
     KC_F12,        KC_6,          KC_7,          KC_8,          KC_9,          KC_0 ,         KC_PSCREEN,
     KC_TRNS,       KC_F,          KC_G,          KC_C,          KC_R,          KC_L,          KC_BSPACE,
                    KC_D,          KC_H,          KC_T,          KC_N,          KC_S,          KC_ENTER,
-    KC_TRNS,       KC_B,          KC_M,          KC_W,          KC_V,          KC_Z,          KC_DELETE,
+    TG(GAMING),    KC_B,          KC_M,          KC_W,          KC_V,          KC_Z,          KC_DELETE,
                                   KC_LGUI,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -117,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     LSFT(KC_TAB),  KC_PGUP,       KC_HOME,       KC_UP,         KC_END,        KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_PGDOWN,     KC_LEFT,       KC_DOWN,       KC_RIGHT,      KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       JCG,           KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Left Thumb Cluster
@@ -127,9 +131,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Right hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       MAXIMISE,      KC_TRNS,       KC_TRNS,       KC_TRNS,
-                   KC_TRNS,       LEFT_SCREEN,   SMALL_SCREEN,  RIGHT_SCREEN,  KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       GMM,           CRITIQUE,      KC_TRNS,       KC_TRNS,       KC_TRNS,
+                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       GMAIL,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -171,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESCAPE,     KC_1,          KC_2,          KC_3,          KC_4,          KC_5,          KC_6,
     KC_TAB,        KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,          KC_Y,
     KC_SCOLON,     KC_A,          KC_S,          KC_D,          KC_F,          KC_G,
-    KC_LSHIFT,     KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,          KC_TRNS,
+    KC_LSHIFT,     KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,          TG(GAMINGDIRS),
     KC_LCTL,       KC_U,          KC_P,          KC_LALT,       KC_SPACE,
 
     // Left Thumb Cluster
@@ -183,7 +187,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_6,          KC_7,          KC_8,          KC_9,          KC_0,          KC_EQUAL,
     KC_TRNS,       KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,          KC_TRNS,
                    KC_H,          KC_J,          KC_K,          KC_L,          KC_SCOLON,     KC_ENTER,
-    TG(GAMINGDIRS),KC_N,          KC_M,          KC_COMMA,      KC_DOT,        KC_SLASH,      KC_LSHIFT,
+    KC_TRNS,       KC_N,          KC_M,          KC_COMMA,      KC_DOT,        KC_SLASH,      KC_LSHIFT,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -197,7 +201,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       TO(BASE),
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Left Thumb Cluster
@@ -209,7 +213,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_UP,         KC_TRNS,       KC_TRNS,       KC_TRNS,
                    KC_TRNS,       KC_LEFT,       KC_DOWN,       KC_RIGHT,      KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    TO(BASE),      KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -322,6 +326,20 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 void matrix_init_user(void) {
 };
 
+inline bool key_pressed(uint16_t keycode) {
+  return keyboard_report->mods & MOD_BIT(keycode);
+}
+
+inline bool shift_pressed(void) {
+  return key_pressed(KC_LSHIFT);
+}
+
+inline void switch_to_tab(const char* s) {
+  SEND_STRING(SS_LGUI("1")SS_LCTRL("1")"s");
+  send_string(s);
+  SEND_STRING(SS_TAP(X_ENTER));
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // dynamically generate these.
@@ -330,16 +348,60 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         eeconfig_init();
       }
       return false;
-      break;
+
     case VRSN:
       if (record->event.pressed) {
         SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
       }
       return false;
-      break;
+
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
+      }
+      return false;
+
+    case GMAIL:
+      if (record->event.pressed) {
+        switch_to_tab("google.com mail");
+      }
+      return false;
+
+    case CRITIQUE:
+      if (record->event.pressed) {
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          switch_to_tab("critique");
+          register_code(KC_LSHIFT);
+        } else {
+          SEND_STRING(SS_LGUI("1"));
+          SEND_STRING(SS_LCTRL("t"));
+          SEND_STRING("cl/"SS_TAP(X_ENTER));
+        }
+      }
+      return false;
+
+    case GMM:
+      if (record->event.pressed) {
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          SEND_STRING("javatests/com/google/android/apps/gmm/");
+          register_code(KC_LSHIFT);
+        } else {
+          SEND_STRING("java/com/google/android/apps/gmm/");
+        }
+      }
+      return false;
+
+    case JCG:
+      if (record->event.pressed) {
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          SEND_STRING("javatests/com/google/");
+          register_code(KC_LSHIFT);
+        } else {
+          SEND_STRING("java/com/google/");
+        }
       }
       return false;
       break;
