@@ -13,6 +13,7 @@ enum custom_keycodes {
   GMAIL,
   GMM,
   JCG,
+  CODE_SEARCH,
 };
 
 enum {
@@ -132,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Right hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       GMM,           CRITIQUE,      KC_TRNS,       KC_TRNS,       KC_TRNS,
-                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       CODE_SEARCH,   KC_TRNS,
     KC_TRNS,       KC_TRNS,       GMAIL,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
@@ -334,9 +335,25 @@ inline bool shift_pressed(void) {
   return key_pressed(KC_LSHIFT);
 }
 
-inline void switch_to_tab(const char* s) {
+void prepare_switch_to_tab(const char* s) {
   SEND_STRING(SS_LGUI("1")SS_LCTRL("1")"s");
+  wait_ms(10);
   send_string(s);
+}
+
+inline void switch_to_tab(const char* s) {
+  prepare_switch_to_tab(s);
+  SEND_STRING(SS_TAP(X_ENTER));
+}
+
+inline void prepare_open_tab(const char* s) {
+  SEND_STRING(SS_LGUI("1"));
+  SEND_STRING(SS_LCTRL("t"));
+  send_string(s);
+}
+
+inline void open_tab(const char* s) {
+  prepare_open_tab(s);
   SEND_STRING(SS_TAP(X_ENTER));
 }
 
@@ -374,9 +391,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           switch_to_tab("critique");
           register_code(KC_LSHIFT);
         } else {
-          SEND_STRING(SS_LGUI("1"));
-          SEND_STRING(SS_LCTRL("t"));
-          SEND_STRING("cl/"SS_TAP(X_ENTER));
+          open_tab("cl/");
         }
       }
       return false;
@@ -406,6 +421,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
+    case CODE_SEARCH:
+      if (record->event.pressed) {
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          prepare_switch_to_tab("code search ");
+          register_code(KC_LSHIFT);
+        } else {
+          prepare_open_tab("c ");
+        }
+      }
   }
   return true;
 }
