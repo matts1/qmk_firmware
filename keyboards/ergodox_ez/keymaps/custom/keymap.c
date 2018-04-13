@@ -14,6 +14,8 @@ enum custom_keycodes {
   GMM,
   JCG,
   CODE_SEARCH,
+  CHROME_TAB,
+  GOLINK
 };
 
 enum {
@@ -122,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     LSFT(KC_TAB),  KC_PGUP,       KC_HOME,       KC_UP,         KC_END,        KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_PGDOWN,     KC_LEFT,       KC_DOWN,       KC_RIGHT,      KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       JCG,           KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       JCG,           GMM,           KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Left Thumb Cluster
@@ -132,8 +134,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Right hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       GMM,           CRITIQUE,      KC_TRNS,       KC_TRNS,       KC_TRNS,
-                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       CODE_SEARCH,   KC_TRNS,
+    KC_TRNS,       KC_TRNS,       GOLINK,        CRITIQUE,      KC_TRNS,       KC_TRNS,       KC_TRNS,
+                   KC_TRNS,       KC_TRNS,       CHROME_TAB,    KC_TRNS,       CODE_SEARCH,   KC_TRNS,
     KC_TRNS,       KC_TRNS,       GMAIL,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
@@ -380,7 +382,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case GMAIL:
       if (record->event.pressed) {
-        switch_to_tab("google.com mail");
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          switch_to_tab("google.com calendar");
+          register_code(KC_LSHIFT);
+        } else {
+          switch_to_tab("google.com mail");
+        }
       }
       return false;
 
@@ -388,10 +396,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (shift_pressed()) {
           unregister_code(KC_LSHIFT);
-          switch_to_tab("critique");
+          open_tab("cl/");
           register_code(KC_LSHIFT);
         } else {
-          open_tab("cl/");
+          switch_to_tab("critique");
         }
       }
       return false;
@@ -425,12 +433,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (shift_pressed()) {
           unregister_code(KC_LSHIFT);
-          prepare_switch_to_tab("code search ");
+          prepare_open_tab("c ");
           register_code(KC_LSHIFT);
         } else {
-          prepare_open_tab("c ");
+          prepare_switch_to_tab("code search ");
         }
       }
+      return false;
+
+    case CHROME_TAB:
+      if (record->event.pressed) {
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          prepare_open_tab("");
+          register_code(KC_LSHIFT);
+        } else {
+          prepare_switch_to_tab("");
+        }
+      }
+      return false;
+
+    case GOLINK:
+      if (record->event.pressed) {
+        prepare_open_tab("go/");
+      }
+      return false;
   }
   return true;
 }
