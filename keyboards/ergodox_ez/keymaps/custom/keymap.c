@@ -15,7 +15,8 @@ enum custom_keycodes {
   JCG,
   CODE_SEARCH,
   CHROME_TAB,
-  GOLINK
+  GOLINK,
+  BUG
 };
 
 enum {
@@ -47,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,        KC_QUOTE,      KC_COMMA,      KC_DOT,        KC_P,          KC_Y,          KC_ENTER,
     KC_LSHIFT,     KC_A,          KC_O,          KC_E,          KC_U,          KC_I,
     KC_ESC,        KC_SCOLON,     KC_Q,          KC_J,          KC_K,          KC_X,          KC_BSPACE,
-    MEH_T(KC_NO),  KC_UNDS,       KC_COLN,       KC_EQUAL,      KC_LCTL,
+    MEH_T(KC_NO),  TG(GAMING),    TG(GAMINGDIRS), KC_EQUAL,      KC_LCTL,
 
     // Left Thumb Cluster
                                                                                KC_6,          KC_7,
@@ -136,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       GOLINK,        CRITIQUE,      KC_TRNS,       KC_TRNS,       KC_TRNS,
                    KC_TRNS,       KC_TRNS,       CHROME_TAB,    KC_TRNS,       CODE_SEARCH,   KC_TRNS,
-    KC_TRNS,       KC_TRNS,       GMAIL,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       BUG,           GMAIL,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
@@ -176,19 +177,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [GAMING] = KEYMAP(
     // Left hand
     KC_ESCAPE,     KC_1,          KC_2,          KC_3,          KC_4,          KC_5,          KC_6,
-    KC_TAB,        KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,          KC_Y,
+    KC_TAB,        KC_Q,          KC_W,          KC_E,          KC_R,          KC_T,          KC_ENTER,
     KC_SCOLON,     KC_A,          KC_S,          KC_D,          KC_F,          KC_G,
-    KC_LSHIFT,     KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,          TG(GAMINGDIRS),
-    KC_LCTL,       KC_U,          KC_P,          KC_LALT,       KC_SPACE,
+    KC_LSHIFT,     KC_Z,          KC_X,          KC_C,          KC_V,          KC_B,          KC_N,
+    KC_0,          KC_TRNS,       KC_TRNS,       KC_LALT,       KC_LCTL,
 
     // Left Thumb Cluster
                                                                                KC_7,          KC_8,
                                                                                               KC_PGUP,
-                                                                KC_0,          KC_9,          KC_PGDOWN,
+                                                                KC_SPACE,      KC_9,          KC_PGDOWN,
 
     // Right hand
     KC_TRNS,       KC_6,          KC_7,          KC_8,          KC_9,          KC_0,          KC_EQUAL,
-    KC_TRNS,       KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,          KC_TRNS,
+    TG(GAMINGDIRS),KC_Y,          KC_U,          KC_I,          KC_O,          KC_P,          KC_TRNS,
                    KC_H,          KC_J,          KC_K,          KC_L,          KC_SCOLON,     KC_ENTER,
     KC_TRNS,       KC_N,          KC_M,          KC_COMMA,      KC_DOT,        KC_SLASH,      KC_LSHIFT,
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
@@ -329,6 +330,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 void matrix_init_user(void) {
 };
 
+inline void switch_to_chrome(void) {
+  SEND_STRING(SS_LGUI("1"));
+}
+
 inline bool key_pressed(uint16_t keycode) {
   return keyboard_report->mods & MOD_BIT(keycode);
 }
@@ -338,18 +343,23 @@ inline bool shift_pressed(void) {
 }
 
 void prepare_switch_to_tab(const char* s) {
-  SEND_STRING(SS_LGUI("1")SS_LCTRL("1")"s");
+  switch_to_chrome();
   wait_ms(10);
+  SEND_STRING(SS_TAP(X_ESCAPE));
+  wait_ms(40);
+  SEND_STRING(SS_LCTRL("<")); // CTRL SHIFT ,
+  wait_ms(80);
   send_string(s);
 }
 
-inline void switch_to_tab(const char* s) {
+void switch_to_tab(const char* s) {
   prepare_switch_to_tab(s);
+  wait_ms(80);
   SEND_STRING(SS_TAP(X_ENTER));
 }
 
 inline void prepare_open_tab(const char* s) {
-  SEND_STRING(SS_LGUI("1"));
+  switch_to_chrome();
   SEND_STRING(SS_LCTRL("t"));
   send_string(s);
 }
@@ -384,10 +394,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (shift_pressed()) {
           unregister_code(KC_LSHIFT);
-          switch_to_tab("google.com calendar");
+          switch_to_tab("google calendar");
           register_code(KC_LSHIFT);
         } else {
-          switch_to_tab("google.com mail");
+          switch_to_tab("google mail");
         }
       }
       return false;
@@ -399,7 +409,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           open_tab("cl/");
           register_code(KC_LSHIFT);
         } else {
-          switch_to_tab("critique");
+          prepare_switch_to_tab("critique ");
         }
       }
       return false;
@@ -458,6 +468,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         prepare_open_tab("go/");
       }
       return false;
+
+    case BUG:
+      if (record->event.pressed) {
+        open_tab("b/");
+      }
   }
   return true;
 }
