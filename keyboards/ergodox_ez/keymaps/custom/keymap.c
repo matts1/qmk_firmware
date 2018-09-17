@@ -9,6 +9,8 @@ enum custom_keycodes {
   EPRM,
   VRSN,
   RGB_SLD,
+  MO_NAV_LAYER,
+  ALTTAB,
   CRITIQUE,
   GMAIL,
   GMM,
@@ -53,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Left Thumb Cluster
                                                                                KC_6,          KC_7,
                                                                                               KC_8,
-                                                                KC_SPACE,      MO(NAV),       KC_LCTL,
+                                                                KC_SPACE,      MO_NAV_LAYER,  KC_LCTL,
 
     // Right hand
     KC_F12,        KC_6,          KC_7,          KC_8,          KC_9,          KC_0 ,         KC_PSCREEN,
@@ -123,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [NAV] = KEYMAP(
     // Left hand
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
-    LSFT(KC_TAB),  KC_PGUP,       KC_HOME,       KC_UP,         KC_END,        KC_TRNS,       KC_TRNS,
+    ALTTAB,        KC_PGUP,       KC_HOME,       KC_UP,         KC_END,        KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_PGDOWN,     KC_LEFT,       KC_DOWN,       KC_RIGHT,      KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       JCG,           GMM,           KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
@@ -369,6 +371,8 @@ inline void open_tab(const char* s) {
   SEND_STRING(SS_TAP(X_ENTER));
 }
 
+bool alttab_enabled = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // dynamically generate these.
@@ -378,15 +382,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
-    case VRSN:
+    case MO_NAV_LAYER:
       if (record->event.pressed) {
-        SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
+        layer_on(NAV);
+      } else {
+        layer_off(NAV);
+        if (alttab_enabled) {
+          alttab_enabled = false;
+          unregister_code(KC_LALT);
+        }
       }
       return false;
 
-    case RGB_SLD:
+    case ALTTAB:
       if (record->event.pressed) {
-        rgblight_mode(1);
+        register_code(KC_LALT);
+        register_code(KC_TAB);
+        alttab_enabled = true;
+      } else {
+        unregister_code(KC_TAB);
       }
       return false;
 
