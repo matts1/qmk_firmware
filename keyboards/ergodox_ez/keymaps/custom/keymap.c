@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,        KC_QUOTE,      KC_COMMA,      KC_DOT,        KC_P,          KC_Y,          KC_ENTER,
     KC_LSHIFT,     KC_A,          KC_O,          KC_E,          KC_U,          KC_I,
     KC_ESC,        KC_SCOLON,     KC_Q,          KC_J,          KC_K,          KC_X,          KC_BSPACE,
-    MEH_T(KC_NO),  TG(GAMING),    TG(GAMINGDIRS), KC_EQUAL,      KC_LCTL,
+    MEH_T(KC_NO),  KC_TRNS,       KC_TRNS,       KC_EQUAL,      KC_LCTL,
 
     // Left Thumb Cluster
                                                                                KC_6,          KC_7,
