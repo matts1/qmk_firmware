@@ -2,6 +2,8 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "version.h"
+#include "report.h"
+#include "host.h"
 
 
 enum custom_keycodes {
@@ -18,7 +20,16 @@ enum custom_keycodes {
   CODE_SEARCH,
   CHROME_TAB,
   GOLINK,
-  BUG
+  BUG,
+  SENS_R_MIN,
+  SENS_L_MIN,
+  SENS_R_LOW,
+  SENS_L_LOW,
+  SENS_R_MED,
+  SENS_L_MED,
+  SENS_R_HIGH,
+  SENS_L_HIGH,
+  OUTPUT_SENS,
 };
 
 enum {
@@ -28,6 +39,7 @@ enum {
   QWERTY,
   NAV,
   MOUSE,
+  SENSITIVITY_CALIBRATION,
 };
 
 #define PLAY_PAUSE KC_MEDIA_PLAY_PAUSE
@@ -62,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_LGUI,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
-    TG(QWERTY),    KC_TRNS,
+    TG(QWERTY),    TG(SENSITIVITY_CALIBRATION),
     KC_TRNS,
     TT(MOUSE),     KC_LALT,       MO(PUNC)
   ),
@@ -114,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
-    KC_NO,         KC_TRNS,
+    KC_NO,         KC_NO,
     KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS
   ),
@@ -140,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
-    KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_NO,
     KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS
   ),
@@ -188,14 +200,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_MS_WH_UP,   KC_TRNS,       KC_TRNS,       KC_TRNS,
                    KC_TRNS,       KC_MS_BTN1,    KC_MS_BTN3,    KC_MS_BTN2,    KC_TRNS,       KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_RIGHT,KC_TRNS,       KC_TRNS,
+    KC_NO,         KC_TRNS,       KC_MS_WH_LEFT, KC_MS_WH_DOWN, KC_MS_WH_RIGHT,KC_TRNS,       KC_TRNS,
                                   KC_TRNS,       RESET,         KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Right Thumb Cluster
-    KC_TRNS,       KC_TRNS,
+    KC_NO,         KC_NO,
     KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS
   ),
+
+  [SENSITIVITY_CALIBRATION] = KEYMAP(
+    // Left hand
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       SENS_L_MIN,    SENS_L_LOW,    SENS_L_MED,    SENS_L_HIGH,   KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Left Thumb Cluster
+                                                                               KC_TRNS,       KC_TRNS,
+                                                                                              KC_TRNS,
+                                                                KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Right hand
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+                   KC_TRNS,       SENS_R_HIGH,   SENS_R_MED,    SENS_R_LOW,    SENS_R_MIN,    OUTPUT_SENS,
+    KC_NO,         KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+                                  KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
+
+    // Right Thumb Cluster
+    KC_NO,         KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,       KC_TRNS,       KC_TRNS
+  ),
+
 
 /*
   [EMPTY] = KEYMAP(
@@ -284,6 +323,27 @@ inline void prepare_open_tab(const char* s) {
 inline void open_tab(const char* s) {
   prepare_open_tab(s);
   SEND_STRING(SS_TAP(X_ENTER));
+}
+
+
+static report_mouse_t mouse_report = {};
+static int32_t mouse_total_x;
+void move_mouse_single(int8_t x) {
+  mouse_report.x = x;
+  host_mouse_send(&mouse_report);
+  mouse_total_x += x;
+}
+
+void move_mouse(int32_t x) {
+  while (x > 127) {
+    move_mouse_single(127);
+    x -= 127;
+  }
+  while (x < -127) {
+    move_mouse_single(-127);
+    x -= -127;
+  }
+  move_mouse_single(x);
 }
 
 bool alttab_enabled = false;
@@ -402,12 +462,62 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         open_tab("b/");
       }
+      return false;
+      
+    case SENS_R_MIN:
+      if (record->event.pressed) {
+        move_mouse(1);
+      }
+      return false;
+    case SENS_L_MIN:
+      if (record->event.pressed) {
+        move_mouse(-1);
+      }
+      return false;
+    case SENS_R_LOW:
+      if (record->event.pressed) {
+        move_mouse(16);
+      }
+      return false;
+    case SENS_L_LOW:
+      if (record->event.pressed) {
+        move_mouse(-16);
+      }
+      return false;
+    case SENS_R_MED:
+      if (record->event.pressed) {
+        move_mouse(256);
+      }
+      return false;
+    case SENS_L_MED:
+      if (record->event.pressed) {
+        move_mouse(-256);
+      }
+      return false;
+    case SENS_R_HIGH:
+      if (record->event.pressed) {
+        move_mouse(4096);
+      }
+      return false;
+    case SENS_L_HIGH:
+      if (record->event.pressed) {
+        move_mouse(-4096);
+      }
+      return false;
+      
+    case OUTPUT_SENS:
+      if (record->event.pressed) {
+        char s[12]; // '-', 4e9, '\0'
+        sprintf(s, "%ld", mouse_total_x);
+        mouse_total_x = 0;
+        send_string(s);
+        return false;
+      }
   }
   return true;
 }
 
 uint32_t layer_state_set_user(uint32_t state) {
-
     uint8_t layer = biton32(state);
 
     ergodox_board_led_off();
@@ -422,6 +532,11 @@ uint32_t layer_state_set_user(uint32_t state) {
         ergodox_right_led_2_on();
         break;
       case MOUSE:
+        ergodox_right_led_3_on();
+        break;
+      case SENSITIVITY_CALIBRATION:
+        ergodox_right_led_1_on();
+        ergodox_right_led_2_on();
         ergodox_right_led_3_on();
         break;
       default:
