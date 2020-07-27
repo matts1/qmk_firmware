@@ -16,6 +16,8 @@ enum custom_keycodes {
   CRITIQUE,
   GMAIL,
   GMM,
+  FUCHSIA_1,
+  FUCHSIA_2,
   JCG,
   CODE_SEARCH,
   CHROME_TAB,
@@ -162,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
     ALTTAB,        KC_PGUP,       KC_HOME,       KC_UP,         KC_END,        KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_PGDOWN,     KC_LEFT,       KC_DOWN,       KC_RIGHT,      KC_TRNS,
-    KC_TRNS,       KC_TRNS,       KC_TRNS,       JCG,           GMM,           KC_TRNS,       KC_TRNS,
+    KC_TRNS,       FUCHSIA_1,     FUCHSIA_2,     JCG,           GMM,           KC_TRNS,       KC_TRNS,
     KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,       KC_TRNS,
 
     // Left Thumb Cluster
@@ -415,6 +417,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
+    case FUCHSIA_1:
+      if (record->event.pressed) {
+        if (shift_pressed()) {
+          unregister_code(KC_LSHIFT);
+          SEND_STRING("guest launch linux_guest");
+          register_code(KC_LSHIFT);
+        } else {
+          SEND_STRING("guest launch zircon_guest");
+        }
+        SEND_STRING(SS_TAP(X_ENTER));
+      }
+      return false;
+      break;
+
+    case FUCHSIA_2:
+      if (record->event.pressed) {
+      }
+      return false;
+
     case JCG:
       if (record->event.pressed) {
         if (shift_pressed()) {
@@ -426,7 +447,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
-      break;
 
     case CODE_SEARCH:
       if (record->event.pressed) {
