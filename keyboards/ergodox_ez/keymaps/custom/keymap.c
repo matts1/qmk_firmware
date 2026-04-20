@@ -23,6 +23,20 @@ enum custom_keycodes {
   SENS_L_HIGH,
   OUTPUT_SENS,
   MO_MEDIA_LAYER,
+
+  // The following require shift to be removed if it was previously pressed.
+  // Otherwise, if you type "!=", for example, and press = before lifting the !,
+  // the = will be sent before shift up is sent, and thus you will get "!+".
+  EQUAL,
+  MINUS,
+  COMMA,
+  DOT,
+  SLASH,
+  SCLN,
+  QUOTE,
+  BSLS,
+  LBRC,
+  RBRC,
 };
 
 enum {
@@ -64,9 +78,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [PUNC] = LAYOUT_ergodox_pretty(
     // Left hand                                                                         // Right hand
     KC_TRNS, KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F11,                       KC_F12,  KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_GRAVE,
-    KC_TRNS, KC_DQUO, KC_COMMA, KC_LCBR, KC_RCBR, KC_AT,   KC_TRNS,                      KC_TRNS, KC_HASH, KC_PERC, KC_LABK, KC_RABK, KC_AMPR, KC_TRNS,
-    KC_NO,   KC_1,    KC_EQUAL, KC_LPRN, KC_RPRN, KC_QUES,                                        KC_SLASH,KC_UNDS, KC_PLUS, KC_ASTR, KC_0,    KC_TRNS,
-    KC_TRNS, KC_COLN, KC_CIRC,  KC_LBRC, KC_RBRC, KC_BSLS, KC_TRNS,                      KC_TRNS, KC_DLR,  KC_MINUS,KC_EXLM, KC_TILD, KC_PIPE, KC_TRNS,
+    KC_TRNS, KC_DQUO, COMMA,    KC_LCBR, KC_RCBR, KC_AT,   KC_TRNS,                      KC_TRNS, KC_HASH, KC_PERC, KC_LABK, KC_RABK, KC_AMPR, KC_TRNS,
+    KC_NO,   KC_1,    EQUAL,    KC_LPRN, KC_RPRN, KC_QUES,                                        SLASH,   KC_UNDS, KC_PLUS, KC_ASTR, KC_0,    KC_TRNS,
+    KC_TRNS, KC_COLN, KC_CIRC,  LBRC,    RBRC,    BSLS,    KC_TRNS,                      KC_TRNS, KC_DLR,  MINUS,   KC_EXLM, KC_TILD, KC_PIPE, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,                                                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 
                                                           KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS,
@@ -202,6 +216,16 @@ static inline bool shift_pressed(void) {
   return key_pressed(KC_LSFT);
 }
 
+static void send_key_without_shift(keyrecord_t *record, uint16_t keycode) {
+  if (record->event.pressed) {
+    if (shift_pressed()) {
+      unregister_mods(MOD_MASK_SHIFT);
+    }
+    register_code(keycode);
+  } else {
+    unregister_code(keycode);
+  }
+}
 
 static report_mouse_t mouse_report = {};
 static int32_t mouse_total_x;
@@ -235,6 +259,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(MEDIA);
         del_mods(MOD_MEH);
       }
+      return false;
+
+    case EQUAL:
+      send_key_without_shift(record, KC_EQUAL);
+      return false;
+    case MINUS:
+      send_key_without_shift(record, KC_MINUS);
+      return false;
+    case COMMA:
+      send_key_without_shift(record, KC_COMMA);
+      return false;
+    case DOT:
+      send_key_without_shift(record, KC_DOT);
+      return false;
+    case SLASH:
+      send_key_without_shift(record, KC_SLASH);
+      return false;
+    case SCLN:
+      send_key_without_shift(record, KC_SCLN);
+      return false;
+    case QUOTE:
+      send_key_without_shift(record, KC_QUOTE);
+      return false;
+    case BSLS:
+      send_key_without_shift(record, KC_BSLS);
+      return false;
+    case LBRC:
+      send_key_without_shift(record, KC_LBRC);
+      return false;
+    case RBRC:
+      send_key_without_shift(record, KC_RBRC);
       return false;
 
     // dynamically generate these.
