@@ -37,6 +37,30 @@ enum custom_keycodes {
   BSLS,
   LBRC,
   RBRC,
+
+  // The followting require shift in order to type it. But if you're fast enough,
+  // shift may still be held down when it was released.
+  TILD,
+  EXLM,
+  AT,
+  HASH,
+  DLR,
+  PERC,
+  CIRC,
+  AMPR,
+  ASTR,
+  LPRN,
+  RPRN,
+  UNDS,
+  PLUS,
+  LCBR,
+  RCBR,
+  PIPE,
+  COLN,
+  DQUO,
+  LABK,
+  RABK,
+  QUES,
 };
 
 enum {
@@ -78,9 +102,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [PUNC] = LAYOUT_ergodox_pretty(
     // Left hand                                                                         // Right hand
     KC_TRNS, KC_F1,   KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F11,                       KC_F12,  KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_GRAVE,
-    KC_TRNS, KC_DQUO, COMMA,    KC_LCBR, KC_RCBR, KC_AT,   KC_TRNS,                      KC_TRNS, KC_HASH, KC_PERC, KC_LABK, KC_RABK, KC_AMPR, KC_TRNS,
-    KC_NO,   KC_1,    EQUAL,    KC_LPRN, KC_RPRN, KC_QUES,                                        SLASH,   KC_UNDS, KC_PLUS, KC_ASTR, KC_0,    KC_TRNS,
-    KC_TRNS, KC_COLN, KC_CIRC,  LBRC,    RBRC,    BSLS,    KC_TRNS,                      KC_TRNS, KC_DLR,  MINUS,   KC_EXLM, KC_TILD, KC_PIPE, KC_TRNS,
+    KC_TRNS, DQUO,    COMMA,    LCBR,    RCBR,    AT,      KC_TRNS,                      KC_TRNS, HASH,    PERC,    LABK,    RABK,    AMPR,    KC_TRNS,
+    KC_NO,   KC_1,    EQUAL,    LPRN,    RPRN,    QUES,                                           SLASH,   UNDS,    PLUS,    ASTR,    KC_0,    KC_TRNS,
+    KC_TRNS, COLN,    CIRC,     LBRC,    RBRC,    BSLS,    KC_TRNS,                      KC_TRNS, DLR,     MINUS,   EXLM,    TILD,    PIPE,    KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,                                                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 
                                                           KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS,
@@ -227,6 +251,21 @@ static void send_key_without_shift(keyrecord_t *record, uint16_t keycode) {
   }
 }
 
+static void send_key_with_shift(keyrecord_t *record, uint16_t keycode) {
+  if (record->event.pressed) {
+    bool need_shift = !shift_pressed();
+    if (need_shift) {
+      register_mods(MOD_MASK_SHIFT);
+    }
+    register_code(keycode);
+    if (need_shift) {
+      unregister_mods(MOD_MASK_SHIFT);
+    }
+  } else {
+    unregister_code(keycode);
+  }
+}
+
 static report_mouse_t mouse_report = {};
 static int32_t mouse_total_x;
 void move_mouse_single(int8_t x) {
@@ -290,6 +329,69 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case RBRC:
       send_key_without_shift(record, KC_RBRC);
+      return false;
+    case PLUS:
+      send_key_with_shift(record, KC_EQUAL);
+      return false;
+    case TILD:
+      send_key_with_shift(record, KC_GRAVE);
+      return false;
+    case EXLM:
+      send_key_with_shift(record, KC_1);
+      return false;
+    case AT:
+      send_key_with_shift(record, KC_2);
+      return false;
+    case HASH:
+      send_key_with_shift(record, KC_3);
+      return false;
+    case DLR:
+      send_key_with_shift(record, KC_4);
+      return false;
+    case PERC:
+      send_key_with_shift(record, KC_5);
+      return false;
+    case CIRC:
+      send_key_with_shift(record, KC_6);
+      return false;
+    case AMPR:
+      send_key_with_shift(record, KC_7);
+      return false;
+    case ASTR:
+      send_key_with_shift(record, KC_8);
+      return false;
+    case LPRN:
+      send_key_with_shift(record, KC_9);
+      return false;
+    case RPRN:
+      send_key_with_shift(record, KC_0);
+      return false;
+    case UNDS:
+      send_key_with_shift(record, KC_MINUS);
+      return false;
+    case LCBR:
+      send_key_with_shift(record, KC_LBRC);
+      return false;
+    case RCBR:
+      send_key_with_shift(record, KC_RBRC);
+      return false;
+    case PIPE:
+      send_key_with_shift(record, KC_BSLS);
+      return false;
+    case COLN:
+      send_key_with_shift(record, KC_SCLN);
+      return false;
+    case DQUO:
+      send_key_with_shift(record, KC_QUOTE);
+      return false;
+    case LABK:
+      send_key_with_shift(record, KC_COMMA);
+      return false;
+    case RABK:
+      send_key_with_shift(record, KC_DOT);
+      return false;
+    case QUES:
+      send_key_with_shift(record, KC_SLASH);
       return false;
 
     // dynamically generate these.
